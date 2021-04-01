@@ -6,6 +6,7 @@ FROM employees; -- 명령어는 대문자로 사용을 권장
 
 
 
+
 --원하는 열들의 데이터만 선택하여 결과보기
 
 SELECT employee_id, first_name, last_name
@@ -13,4 +14,33 @@ FROM employees;
 
 
 
---
+
+
+--원하는 열들의 데이터만 선택하여 
+-- employee-id를 기준으로 내림차순 정렬 후 결과보기
+SELECT employee_id, first_name, last_name
+FROM employees
+ORDER BY employee_id DESC, first_name ASC; -- DESC 내림차순
+
+
+
+
+
+--특정열의 고유 값만 추출하여 출력
+
+SELECT DISTINCT job_id
+FROM employees;
+
+
+
+
+--별명 사용 AS ..
+
+SELECT employee_id AS 사원번호,first_name As 이름,last_name As 성
+FROM employees;
+
+
+
+
+
+

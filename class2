@@ -1,0 +1,110 @@
+SELECT *
+FROM employees;
+
+--*은 모든 열 모든 데이터를 조회
+
+--명령어는 대문자 나머지는 소문자로 작성권장
+
+
+
+
+
+
+
+
+SELECT employee_id, first_name, last_name
+FROM employees;
+
+-- select 뒤의 열들만 조회
+--명령어는 대문자 나머지는 소문자로 작성권장
+
+
+
+
+
+
+
+SELECT employee_id, first_name, last_name
+FROM employees;
+ORDER BY employee_id DESC;
+
+-- select 뒤의 열들만 조회
+--employee_id 를 기준으로 내림차순 DESC정렬
+
+
+
+
+
+SELECT DISTINCT job_id
+FROM employees;
+
+-- job_id를 기준으로 고유한 값들만 즉, 중복 제거된 결과
+
+
+
+
+
+
+SELECT employee_id AS 사원번호, first_name AS 이름, last_name AS 성
+FROM employees;
+
+-- AS를 사용하여 열이름을 변경하여 출력한다.
+
+
+
+
+
+SELECT employee_id, first_name || last_name 
+FROM employees;
+
+-- 두 개열을 붙여서 하나의 데이터 값으로 나타낸다.
+
+
+
+
+SELECT employee_id,
+       first_name || ' ' || last_name,
+       email || '@' ||'company.com'
+FROM employees;
+
+-- 두 개열을 붙여서 하나의 데이터 값으로 나타낸다.
+-- 가운데 한칸 띄기
+
+
+
+
+SELECT employee_id, salary,
+       salary+500,
+       salary-100,
+       (salary * 1.1)/2
+       
+FROM employees;
+
+-- 새로운 열을 생성하는 것이 아니라 보여만 주는 것이다.
+
+
+
+
+
+SELECT employee_id AS 사원번호,
+       salary AS 급여,
+       salary+500 AS 추가급여,
+       salary-100 AS 인하급여,
+       (salary * 1.1)/2 AS 조정급여       
+FROM employees;
+
+-- 열이름을 별명으로 잠시 보여줄떄만 사용
+
+
+
+
+
+
+
+
+
+
+
+
+
+

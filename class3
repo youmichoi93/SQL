@@ -1,0 +1,183 @@
+SELECT salary * NVL(commission_pct, 1)
+
+FROM   employees
+
+ORDER BY commission_pct;
+
+
+
+
+
+
+
+
+--DECODE 함수는 특정 조건을 만족하는 경우에 값을 변경하여 출력하고자 할 때 유용.
+ IF-THEN-ELSE-END의 조건 논리를 가능하게 하는 함수. 데이터 값이 조건 값과 일치하면 치환 값을 출력하고 일치하지 않으면 기본값을 출력
+
+SELECT first_name,
+
+       last_name,
+
+       department_id,
+
+       salary 원래급여,
+
+       DECODE(department_id, 60, salary*1.1, salary) 조정된급여,
+
+       DECODE(department_id, 60, ‘10%인상’, ‘미인상’) 인상여부
+
+FROM   employees;
+
+
+
+
+
+
+
+
+
+
+
+--salary가 9000 이상이면 ‘상위급여’, 6000과 8999 사이면 ‘중위급여’, 그 외는 ‘하위급여’라고 출력
+SELECT employee_id, first_name, last_name, salary,
+
+       CASE  --CASE 함수는 조건의 범위가 다양한 경우에 쉽게 처리할 수 있음
+
+            WHEN salary >= 9000 THEN ‘상위급여’
+
+            WHEN salary BETWEEN 6000 AND 8999 THEN ‘중위급여’
+
+            ELSE ‘하위급여’
+
+       END AS 급여등급
+
+FROM  employees
+
+WHERE job_id = ‘IT_PROG’;
+
+
+
+
+
+
+--공통 순위를 출력하되 공통 순위만큼 건너뛰어 다음 순위를 출력한다.RANK
+--공통 순위를 출력하되 건너뛰지 않고 바로 다음 순위를 출력한다.   DENSE_RANK
+--공통 순위를 없이 출력한다.ROW_NUMBER
+
+
+
+
+
+
+
+--employees 테이블의 salary 값이 높은 순서대로 순위를 매겨 출력
+SELECT employee_id,
+
+       salary,
+
+       RANK() OVER(ORDER BY salary DESC) RANK_급여,
+
+       DENSE_RANK() OVER(ORDER BY salary DESC) DENSE_RANK_급여,
+
+       ROW_NUMBER() OVER(ORDER BY salary DESC) ROW_NUMBER_급여
+
+FROM employees;
+
+
+
+
+
+--employees 테이블 직원이 속한 department_id 안에서 salary 값이 높은 순서대로 순위를 매겨 출력
+SELECT A.employee_id,
+
+       A.department_id,
+
+       B.department_name,
+
+       salary,
+
+       RANK()       OVER(PARTITION BY A.department_id ORDER BY salary DESC) RANK_급여,
+
+       DENSE_RANK() OVER(PARTITION BY A.department_id ORDER BY salary DESC) DENSE_RANK_급여,
+
+       ROW_NUMBER() OVER(PARTITION BY A.department_id ORDER BY salary DESC) ROW_NUMBER_급여
+
+FROM employees A, departments B
+
+WHERE A.department_id = B.department_id
+
+ORDER BY B.department_id, A.salary DESC;
+
+
+
+
+
+
+
+
+--지정된 열의 행의 갯수세는 것
+SELECT COUNT(salary) salary행수
+FROM   employees;
+
+
+
+
+--합과 평균
+SELECT SUM(salary) 합계, AVG(salary) 평균, SUM(salary)/COUNT(salary) 계산된평균
+FROM   employees;
+
+
+
+
+
+
+
+
+--최댓값, 최솟값
+SELECT MAX(salary) 최댓값, MIN(salary) 최솟값, MAX(first_name) 최대문자값, MIN(first_name) 최소문자값
+FROM   employees;
+
+
+
+
+
+
+
+
+Select job_id 직무,SUM(salary) 직무별_총급여, AVG(salary) 직무별_평균급여
+FROM   employees  
+WHERE  employee_id >=10
+GROUP  BY job_id
+ORDER  BY 직무별_총급여 DESC,직무별_평균급여;
+
+
+
+
+
+
+SELECT job_id job_id_대그룹,
+       manager_id manager_id_중그룹,
+       SUM(salary) 그룹핑_총급여,
+       AVG(salary) 그룹핑_평균급여
+FROM   employees
+WHERE  employee_id >= 10
+GROUP BY job_id, manager_id ----job_id별로 한 번 그룹화하고 manager_id별로 다시 한 번 그룹화
+ORDER BY 그룹핑_총급여 DESC, 그룹핑_평균급여;
+
+
+
+
+
+SELECT job_id 직무, SUM(salary) 직무별_총급여, AVG(salary) 직무별_평균급여
+FROM   employees
+WHERE  employee_id >= 10   --HAVING 절은 그룹화된 값에 조건식을 적용할 때 사용합니다. 즉, WHERE 절에서는 그룹 함수를 사용할 수 없으므로 HAVING 절을 사용해 그룹 함수의 결괏값에 대해 조건식을 적용
+GROUP BY job_id
+HAVING   SUM(salary) > 30000  --HAVING의 위치는 그룹BY밑이 좋음
+ORDER BY 직무별_총급여 DESC, 직무별_평균급여;
+
+
+
+
+
+
+

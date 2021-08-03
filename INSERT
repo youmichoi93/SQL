@@ -1,0 +1,4 @@
+INSERT INTO 테이블명(필드명, 필드명,필드명)  VALUES('값' , '값' , '값');
+
+SELECT * FROM 테이블명; #전부 조회
+SELECT MAX(아이디값) FROM 테이블명  #max seq조회 , limit 해제하기

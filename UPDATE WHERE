@@ -1,0 +1,2 @@
+
+UPDATE 테이블명 SET '필드명' = '값' WHERE (`PKID` = '517');
